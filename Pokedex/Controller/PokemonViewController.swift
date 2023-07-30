@@ -22,6 +22,7 @@ class PokemonViewController: UIViewController {
     
     func configureLayout() {
         navigationItem.hidesBackButton = true
+        pokemonImage.layer.cornerRadius = 16.0
     }
     
     func configureDatas() {
@@ -30,6 +31,7 @@ class PokemonViewController: UIViewController {
             case .success(let pokemon):
                 DispatchQueue.main.async {
                     self.pokemonName.text = pokemon.name
+                    self.pokemonImage.imageFrom(url: URL(string: pokemon.imageUrl)!)
                 }
             case .failure(let error):
                 print("Get pokemon error: \(error)")
