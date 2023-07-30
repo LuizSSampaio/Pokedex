@@ -17,10 +17,26 @@ class PokemonViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLayout()
+        configureDatas()
     }
     
     func configureLayout() {
         navigationItem.hidesBackButton = true
+    }
+    
+    func configureDatas() {
+        fetchPokemonData(actualPokemonId) { result in
+            switch result {
+            case .success(let pokemon):
+                DispatchQueue.main.async {
+                    self.pokemonName.text = pokemon.name
+                }
+            case .failure(let error):
+                print("Get pokemon error: \(error)")
+            }
+        }
+        
+        pokemonId.text = "\(actualPokemonId) -"
     }
     
     @IBAction func nextButtonPressed(_ sender: Any) {
@@ -29,6 +45,7 @@ class PokemonViewController: UIViewController {
         } else {
             actualPokemonId += 1
         }
+        configureDatas()
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -37,6 +54,7 @@ class PokemonViewController: UIViewController {
         } else {
             actualPokemonId -= 1
         }
+        configureDatas()
     }
 }
 
